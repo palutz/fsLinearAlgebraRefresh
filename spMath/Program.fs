@@ -7,8 +7,11 @@ type spVector (c : float list) =
     | [x] -> [x; 0.0]
     | _ -> c
 
-  member this.ToList () =
-    vect
+  let dv = vect |> List.length
+
+  member this.ToList () = vect
+
+  member this.Dimension = dv
 
   override x.GetHashCode() =
     hash (vect)
@@ -31,4 +34,5 @@ let main argv =
   if sv = sv2 then "true" else "false"
   |> printfn "sv and sv2 %s"
   printfn "sv %s, sv2 %s" (sv.ToString()) (sv2.ToString())
+
   0 // return an integer exit code
