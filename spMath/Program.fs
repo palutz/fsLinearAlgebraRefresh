@@ -1,28 +1,4 @@
-﻿open System
-
-type spVector (c : float list) =
-  let vect =
-    match c with 
-    | [] -> [0.0; 0.0]
-    | [x] -> [x; 0.0]
-    | _ -> c
-
-  let dv = vect |> List.length
-
-  member this.ToList () = vect
-
-  member this.Dimension = dv
-
-  override x.GetHashCode() =
-    hash (vect)
-
-  override x.Equals y =
-    match y with
-    | :? spVector as v -> v.ToList() = vect
-    | _ -> false
-
-  override x.ToString () = sprintf "Vector: %A" vect
-
+﻿open SPMath.Vector
 
 [<EntryPoint>]
 let main argv =
