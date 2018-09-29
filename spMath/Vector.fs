@@ -13,23 +13,28 @@ module Vector =
 
     let dv = vect |> List.length
 
-    member this.ToList () = vect
+    member this.toList = vect
 
-    member this.Dimension = dv
-
-    // Add 2 vectors. If there are with diff dimensions return None
-    static member (+) (v1: spVector, v2: spVector) = 
-      if v1.Dimension = v2.Dimension then
-        List.map2 (+) (v1.ToList()) (v2.ToList())
-      else
-        failwith "Vectors with different dimension" 
+    member this.length = dv
 
     override this.GetHashCode() =
       hash (vect)
 
     override this.Equals y =
       match y with
-      | :? spVector as v -> v.ToList() = vect
+      | :? spVector as v -> v.toList = vect
       | _ -> false
 
     override this.ToString () = sprintf "Vector: %A" vect
+
+
+
+  let mathVect (f: float -> float -> float)(v1: spVector)(v2: spVector) : spVector = 
+    if v1.length <> v2.length then
+      failwith "Vectors with different dimension" 
+    List.map2 f (v1.toList) (v2.toList)
+    |> spVector
+
+  // Add 2 vectors. If there are with diff dimensions return None
+  let inline (+) (v1: spVector) (v2: spVector) = 
+    mathVect (+) v1 v2
