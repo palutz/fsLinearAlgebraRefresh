@@ -29,7 +29,7 @@ module Vector =
 
 
 
-  let mathVect (f: float -> float -> float)(v1: spVector)(v2: spVector) : Result<spVector, string> = 
+  let fVect (f: float -> float -> float)(v1: spVector)(v2: spVector) : Result<spVector, string> = 
     if v1.length = v2.length then
       List.map2 f (v1.toList) (v2.toList)
       |> spVector
@@ -39,13 +39,18 @@ module Vector =
 
   // Add 2 vectors. If there are with diff dimensions return None
   let inline (+) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
-    mathVect (+) v1 v2
+    fVect (+) v1 v2
 
   // Subtract 2 vectors. If there are with diff dimensions return None
   let inline (-) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
-    mathVect (-) v1 v2
+    fVect (-) v1 v2
 
+  // Scalar moltiplication
   let inline (*) (v1: spVector) a : spVector = 
     v1.toList 
     |> List.map (fun x -> x * a) 
     |> spVector
+
+  // Negate all the elements in the vector
+  let inline (--) (v: spVector) : spVector = 
+    v * (-1.0) 
