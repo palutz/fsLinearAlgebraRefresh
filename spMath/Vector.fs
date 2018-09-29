@@ -41,6 +41,7 @@ module Vector =
   let inline (+) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
     mathVect (+) v1 v2
 
+  // Subtract 2 vectors. If there are with diff dimensions return None
   let inline (-) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
     mathVect (-) v1 v2
 
