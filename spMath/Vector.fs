@@ -29,12 +29,22 @@ module Vector =
 
 
 
-  let mathVect (f: float -> float -> float)(v1: spVector)(v2: spVector) : spVector = 
-    if v1.length <> v2.length then
-      failwith "Vectors with different dimension" 
-    List.map2 f (v1.toList) (v2.toList)
-    |> spVector
+  let mathVect (f: float -> float -> float)(v1: spVector)(v2: spVector) : Result<spVector, string> = 
+    if v1.length = v2.length then
+      List.map2 f (v1.toList) (v2.toList)
+      |> spVector
+      |> Ok
+    else 
+      Error "Vectors with different dimension"
 
   // Add 2 vectors. If there are with diff dimensions return None
-  let inline (+) (v1: spVector) (v2: spVector) = 
+  let inline (+) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
     mathVect (+) v1 v2
+
+  let inline (-) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
+    mathVect (-) v1 v2
+
+  let inline (*) (v1: spVector) a : spVector = 
+    v1.toList 
+    |> List.map (fun x -> x * a) 
+    |> spVector
