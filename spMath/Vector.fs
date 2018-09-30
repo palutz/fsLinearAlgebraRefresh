@@ -11,21 +11,40 @@ module Vector =
       | [x] -> [x; 0.0]
       | _ -> c
 
-    let dv = vect |> List.length
+    let dv : int = vect |> List.length
 
-    member this.toList = vect
+    member this.toList : float list = vect
 
-    member this.length = dv
+    member this.length : int = dv
 
+    // calculate the magnitude of the vector
+    // sqrt (sum of elem_i^2) 
+    member this.magnitude : float = 
+      vect 
+      |> List.fold(fun acc x -> x * x + acc) 0.0
+      |> sqrt
+
+    // calculate the unit vector in the direction of the vector
+    // (1 / magnitude) * vector
+    member this.direction : Result<spVector, string> = 
+      let m = this.magnitude
+      match m with 
+      | 0.0 -> Error "Vector with magnitude = 0.0"
+      | _ ->  vect 
+              |> List.map (fun x -> x * 1.0 / m)
+              |> spVector
+              |> Ok
+
+    // --- Override methods --- 
     override this.GetHashCode() =
       hash (vect)
 
-    override this.Equals y =
+    override this.Equals y : bool =
       match y with
       | :? spVector as v -> v.toList = vect
       | _ -> false
 
-    override this.ToString () = sprintf "Vector: %A" vect
+    override this.ToString () : string = sprintf "Vector: %A" vect
 
 
 
