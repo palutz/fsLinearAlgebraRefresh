@@ -4,6 +4,7 @@ module Vector =
 
   open System
 
+  
   type spVector (c : float list) =
     let vect =
       match c with 
@@ -46,24 +47,24 @@ module Vector =
 
     override this.ToString () : string = sprintf "Vector: %A" vect
 
-    static member fVect (f: float -> float -> float)(v1: spVector)(v2: spVector) : Result<spVector, string> = 
+    static member fVect (f: float -> float -> float) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
       if v1.length = v2.length then
         List.map2 f (v1.toList) (v2.toList)
         |> spVector
         |> Ok
       else 
         Error "Vectors with different dimension"
-      
+
     // Add 2 vectors. If there are with diff dimensions return None
-    static member (+.) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
-      fVect (+) v1 v2
+    static member (+.) (v1: spVector, v2: spVector) : Result<spVector, string> = 
+      spVector.fVect (+) v1 v2
 
     // Subtract 2 vectors. If there are with diff dimensions return None
-    static member (-.) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
-      fVect (-) v1 v2
+    static member (-.) (v1: spVector, v2: spVector) : Result<spVector, string> = 
+      spVector.fVect (-) v1 v2
 
     // Scalar moltiplication
-    static member ( *.) (v1: spVector) a : spVector = 
+    static member ( *.) (v1: spVector, a) : spVector = 
       v1.toList 
       |> List.map (fun x -> x * a) 
       |> spVector
@@ -72,5 +73,5 @@ module Vector =
     static member (~-.) (v: spVector) : spVector = 
       v *. (-1.0)
 
-    static member ( *.*) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
-      fVect (*) v1 v2
+    static member ( *.*) (v1: spVector, v2: spVector) : Result<spVector, string> = 
+      spVector.fVect (*) v1 v2
