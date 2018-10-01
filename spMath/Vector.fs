@@ -57,19 +57,22 @@ module Vector =
       Error "Vectors with different dimension"
 
   // Add 2 vectors. If there are with diff dimensions return None
-  let inline (+) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
+  let inline (+.) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
     fVect (+) v1 v2
 
   // Subtract 2 vectors. If there are with diff dimensions return None
-  let inline (-) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
+  let inline (-.) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
     fVect (-) v1 v2
 
   // Scalar moltiplication
-  let inline (*) (v1: spVector) a : spVector = 
+  let inline ( *.) (v1: spVector) a : spVector = 
     v1.toList 
     |> List.map (fun x -> x * a) 
     |> spVector
 
   // Negate all the elements in the vector
-  let inline (--) (v: spVector) : spVector = 
-    v * (-1.0) 
+  let inline (~-.) (v: spVector) : spVector = 
+    v *. (-1.0)
+
+  let inline ( *.*) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
+    fVect (*) v1 v2
