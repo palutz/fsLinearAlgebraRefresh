@@ -17,3 +17,5 @@
 #### Euclidian space
 
 v . w = ||v|| * ||w|| * cos O
+so...
+0 = arccos ( (v . w) / (||v|| * ||w||) )
