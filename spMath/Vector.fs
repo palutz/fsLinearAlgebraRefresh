@@ -74,5 +74,12 @@ module Vector =
   let inline (~-.) (v: spVector) : spVector = 
     v *. (-1.0)
 
+  // Inner product
   let inline ( *.*) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
     fVect (*) v1 v2
+
+  let inline ( *.. ) (v1: spVector) (v2: spVector) : Result<float, string> = 
+    let vr = v1 *.* v2
+    match vr with
+    | Ok r -> r.toList |> List.sum |> Ok
+    | Error e -> Error e
