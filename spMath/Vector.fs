@@ -78,8 +78,11 @@ module Vector =
   let inline ( *.*) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
     fVect (*) v1 v2
 
+  // dot product
   let inline ( *.. ) (v1: spVector) (v2: spVector) : Result<float, string> = 
     let vr = v1 *.* v2
     match vr with
     | Ok r -> r.toList |> List.sum |> Ok
     | Error e -> Error e
+
+  let inline ( O. ) (v1: spVector) (v2: spVector) : float = 
