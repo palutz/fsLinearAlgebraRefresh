@@ -47,7 +47,6 @@ module Vector =
     override this.ToString () : string = sprintf "Vector: %A" vect
 
 
-
   let fVect (f: float -> float -> float)(v1: spVector)(v2: spVector) : Result<spVector, string> = 
     if v1.length = v2.length then
       List.map2 f (v1.toList) (v2.toList)
@@ -102,3 +101,4 @@ module Vector =
     | Error e -> Error e
     | Ok x when x <> 0.0 -> (x * 180.0 / Math.PI) |> Ok
     | Ok x when x = 0.0 -> Ok x
+  
