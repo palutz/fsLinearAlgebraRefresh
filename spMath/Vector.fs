@@ -85,4 +85,20 @@ module Vector =
     | Ok r -> r.toList |> List.sum |> Ok
     | Error e -> Error e
 
-  let inline ( O. ) (v1: spVector) (v2: spVector) : float = 
+  // calculate the angle between 2 vectors (in radiants)
+  let inline ( <.> ) (v1: spVector) (v2: spVector) : Result<float, string> = 
+    let denom = v1.magnitude * v2.magnitude
+    if denom > 0.0 then
+      let numer = v1 *.. v2
+      match numer with 
+      | Ok x -> Math.Acos (x / denom) |> Ok
+      | Error e -> Error e
+    else 
+      Error "0 vector detected"
+
+  //calculate the angle between 2 vector in
+  let inline ( <.~> ) (v1: spVector) (v2: spVector) : Result<float, string> = 
+    match (v1 <.> v2) with
+    | Error e -> Error e
+    | Ok x when x <> 0.0 -> (x * 180.0 / Math.PI) |> Ok
+    | Ok x when x = 0.0 -> Ok x

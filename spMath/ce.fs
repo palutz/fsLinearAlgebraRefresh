@@ -13,7 +13,7 @@ module Vector =
     member this.ReturnFrom x =
       x
 
-
+(*
   let addRB a b = 
     if (a > 0) && (b > 0) then
       a + b |> Ok
@@ -29,3 +29,5 @@ module Vector =
     let! c = addRB a1 b1
     return c
   }
+
+*)
