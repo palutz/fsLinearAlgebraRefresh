@@ -17,12 +17,31 @@ module Vector =
 
     member this.length : int = dv
 
+    // Times scalar - return a new vector as a result
+    // of this vector times a scalar value
+    member this.timesScalar (a : float) : spVector = 
+      vect 
+      |> List.map (fun x -> x * a) 
+      |> spVector
+
+    // Negate all the element of the vector
+    member this.negate : spVector = 
+      this.timesScalar (-1.0)
+
     // calculate the magnitude of the vector
     // sqrt (sum of elem_i^2) 
     member this.magnitude : float = 
       vect 
       |> List.fold(fun acc x -> x * x + acc) 0.0
       |> sqrt
+
+    // Normalize the vector (multiply every element of the vector
+    // by 1 / magnitude) 
+    member this.normalize : Result<spVector,string> =
+      let m = this.magnitude
+      match m with 
+      | 0.0 ->  Error "Cannot normalize 0 vector"
+      | _ ->  this.timesScalar (1.0 / m) |> Ok
 
     // calculate the unit vector in the direction of the vector
     // (1 / magnitude) * vector
@@ -65,13 +84,11 @@ module Vector =
 
   // Scalar moltiplication
   let inline ( *.) (v1: spVector) a : spVector = 
-    v1.toList 
-    |> List.map (fun x -> x * a) 
-    |> spVector
+    v1.timesScalar a
 
   // Negate all the elements in the vector
   let inline (~-.) (v: spVector) : spVector = 
-    v *. (-1.0)
+    v.negate
 
   // Inner product
   let inline ( *.*) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
