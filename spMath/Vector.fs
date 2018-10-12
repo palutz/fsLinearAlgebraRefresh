@@ -13,8 +13,18 @@ module Vector =
 
     let dv : int = vect |> List.length
 
+    let mgntd : float =  // magnitude, Calculate only once
+      vect 
+      |> List.fold(fun acc x -> x * x + acc) 0.0
+      |> sqrt
+
+    let negateIt : spVector = // the negate of the vector
+      this.timesScalar (-1.0)
+
+    // convert the Vector to a List of float
     member this.toList : float list = vect
 
+    // number of element in the vector
     member this.length : int = dv
 
     // Times scalar - return a new vector as a result
@@ -25,15 +35,11 @@ module Vector =
       |> spVector
 
     // Negate all the element of the vector
-    member this.negate : spVector = 
-      this.timesScalar (-1.0)
+    member this.negate : spVector = negateIt
 
     // calculate the magnitude of the vector
     // sqrt (sum of elem_i^2) 
     member this.magnitude : float = 
-      vect 
-      |> List.fold(fun acc x -> x * x + acc) 0.0
-      |> sqrt
 
     // Normalize the vector (multiply every element of the vector
     // by 1 / magnitude) 
@@ -54,6 +60,14 @@ module Vector =
               |> spVector
               |> Ok
 
+    member this.IsParallel (other: spVector) : bool = 
+      let h = vect. List.
+      let h1 = other.toList.tr head |> Option
+      match
+      // check if there are both not 0 -> if at least is zero they are parallel (return true)
+      // calculate the ratio between the 2 heads
+      // sum and check that the ratio is the same 
+
     // --- Override methods --- 
     override this.GetHashCode() =
       hash (vect)
@@ -65,6 +79,7 @@ module Vector =
 
     override this.ToString () : string = sprintf "Vector: %A" vect
 
+  // ------ type spVector end of code ------
 
 
   let fVect (f: float -> float -> float)(v1: spVector)(v2: spVector) : Result<spVector, string> = 
@@ -93,3 +108,7 @@ module Vector =
 
   let inline ( *.*) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
     fVect (*) v1 v2
+
+  //let inline ( /./ )  (v1: spVector) (v2: spVector) : bool =
+    //let a b = v1.toList.
+
