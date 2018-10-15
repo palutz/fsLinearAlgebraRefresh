@@ -39,7 +39,7 @@ module Vector =
 
     // calculate the magnitude of the vector
     // sqrt (sum of elem_i^2) 
-    member this.magnitude : float = 
+    member this.magnitude : float = mgntd
 
     // Normalize the vector (multiply every element of the vector
     // by 1 / magnitude) 
@@ -61,7 +61,7 @@ module Vector =
               |> Ok
 
     member this.IsParallel (other: spVector) : bool = 
-      let h = vect. List.
+      let h = vect.tryH
       let h1 = other.toList.tr head |> Option
       match
       // check if there are both not 0 -> if at least is zero they are parallel (return true)
