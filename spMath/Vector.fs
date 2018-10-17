@@ -13,13 +13,15 @@ module Vector =
 
     let dv : int = vect |> List.length
 
-    let mgntd : float =  // magnitude, Calculate only once
+    let mgntd : float =  // magnitude,
       vect 
       |> List.fold(fun acc x -> x * x + acc) 0.0
       |> sqrt
 
     let negateIt : spVector = // the negate of the vector
-      this.timesScalar (-1.0)
+      match mgntd with 
+      | 0 -> this
+      | _ -> this.timesScalar (-1.0)
 
     // convert the Vector to a List of float
     member this.toList : float list = vect
@@ -30,9 +32,11 @@ module Vector =
     // Times scalar - return a new vector as a result
     // of this vector times a scalar value
     member this.timesScalar (a : float) : spVector = 
-      vect 
-      |> List.map (fun x -> x * a) 
-      |> spVector
+      match mgntd with
+      | 0 -> 0
+      | _ -> vect 
+            |> List.map (fun x -> x * a) 
+            |> spVector
 
     // Negate all the element of the vector
     member this.negate : spVector = negateIt
@@ -44,8 +48,7 @@ module Vector =
     // Normalize the vector (multiply every element of the vector
     // by 1 / magnitude) 
     member this.normalize : Result<spVector,string> =
-      let m = this.magnitude
-      match m with 
+      match mgntd with
       | 0.0 ->  Error "Cannot normalize 0 vector"
       | _ ->  this.timesScalar (1.0 / m) |> Ok
 
@@ -61,9 +64,11 @@ module Vector =
               |> Ok
 
     member this.IsParallel (other: spVector) : bool = 
-      let h = vect.tryH
-      let h1 = other.toList.tr head |> Option
-      match
+      match mgntd, other.magnitude with
+      | 0, 0 -> None 
+      | _, 0 -> Some 
+      | None, Some y -> y
+      | None, None -> 0
       // check if there are both not 0 -> if at least is zero they are parallel (return true)
       // calculate the ratio between the 2 heads
       // sum and check that the ratio is the same 
