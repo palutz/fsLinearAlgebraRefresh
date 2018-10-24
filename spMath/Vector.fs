@@ -52,23 +52,26 @@ module Vector =
 
     // calculate the unit vector in the direction of the vector
     // (1 / magnitude) * vector
-    member this.Direction : Result<spVector, string> = 
+    member this.Direction : Result<float list, string> = 
       match mgntd with 
       | 0.0 -> Error "Vector with magnitude = 0.0"
       | _ ->  vect 
               |> List.map (fun x -> x * 1.0 / mgntd)
-              |> spVector
               |> Ok
-
+    
+    // IsParallel - if at least one of the vectors is a zero vector
+    //            the vectors are parallels, otherwise I need to check the abs of the direction
     member this.IsParallel (other: spVector) : bool = 
-      match mgntd, other.Magnitude with
-      | 0.0, 0.0 -> true
-      | _, 0.0 -> true
-      | 0.0, _ -> true
-      | _ , _ -> (vect.Head / other.ToList.Head) = (vect |> List.sum) / (other.ToList |> List.sum)
-      // check if there are both not 0 -> if at least is zero they are parallel (return true)
-      // calculate the ratio between the 2 heads
-      // sum and check that the ratio is the same 
+      // check first the lenght of the vector are the same and then
+      // when Direction > 0 (not zero vector) just check that both 
+      // Vector have the same abs value
+      this.length = other.length &&
+      match this.Direction, other.Direction with 
+      | Ok v1, Ok v2 -> List.map2(fun (x1: float) (y1: float) -> Math.Abs(x1) = Math.Abs(y1)) v1 v2 
+                      |> List.fold(&&) true
+      | _ , _ -> true  // if any Vector has Direction = Error (zero vector)
+                       // returns true, Zero vector is always parallel to another
+      //| _ , _ -> (vect.Head / other.ToList.Head) = (vect |> List.sum) / (other.ToList |> List.sum)
 
     // --- Override methods --- 
     override this.GetHashCode() =
@@ -111,6 +114,10 @@ module Vector =
   let inline ( *.*) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
     fVect (*) v1 v2
 
+  let cippaLippa (v1: spVector) =
+    match v1.Direction with
+    | Ok x -> x |> List.map (Math.Abs)
+    | _ -> List.empty
   //let inline ( /./ )  (v1: spVector) (v2: spVector) : bool =
     //let a b = v1.toList.
 
