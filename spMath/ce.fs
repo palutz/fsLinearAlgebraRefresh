@@ -31,3 +31,42 @@ module Vector =
   }
 
 *)
+module test = 
+
+  let myFold<'a, 'b> (f: 'b -> 'a -> 'b) (state: 'b) (l : 'a list) : 'b =
+    let rec inner acc l1 =
+      match l1 with 
+      | x :: xs -> inner (f acc x) xs
+      | _ -> acc 
+
+    inner state l 
+
+  let ll = [1; 2; 3]
+  ll |> myFold (fun s x -> s * x) 1
+
+  // n -> repeat the action n times
+  // f -> the function to apply (a folder)
+  // zv -> Zero Value, the init value for the sequence
+  // st -> the initial state of the action 
+  let doitN (n: int) (f: 'b -> 'a -> 'b) (zv: 'a) (st: 'b) =
+    if n > 0 then 
+      Seq.init n (fun _ -> zv)
+      |> Seq.fold f st
+    else 
+      st
+
+  let revertIt (str: string) : string =
+    str 
+    |> Seq.map string
+    |> Seq.rev
+    |> Seq.fold (+) ""
+    
+
+  let act st n = revertIt n |> (+) st
+
+  act "uno" "Steo"
+  act "" "Steo"
+  
+
+  doitN 3 act "" "Steo"
+  doitN<int> 2 (+) 0 
