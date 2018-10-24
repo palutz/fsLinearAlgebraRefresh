@@ -68,7 +68,7 @@ module Vector =
       this.length = other.length &&
       match this.Direction, other.Direction with 
       | Ok v1, Ok v2 -> List.map2(fun (x1: float) (y1: float) -> Math.Abs(x1) = Math.Abs(y1)) v1 v2 
-                      |> List.fold(&&) true
+                        |> List.fold(&&) true
       | _ , _ -> true  // if any Vector has Direction = Error (zero vector)
                        // returns true, Zero vector is always parallel to another
       //| _ , _ -> (vect.Head / other.ToList.Head) = (vect |> List.sum) / (other.ToList |> List.sum)
@@ -114,10 +114,5 @@ module Vector =
   let inline ( *.*) (v1: spVector) (v2: spVector) : Result<spVector, string> = 
     fVect (*) v1 v2
 
-  let cippaLippa (v1: spVector) =
-    match v1.Direction with
-    | Ok x -> x |> List.map (Math.Abs)
-    | _ -> List.empty
   //let inline ( /./ )  (v1: spVector) (v2: spVector) : bool =
     //let a b = v1.toList.
-
